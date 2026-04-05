@@ -1,8 +1,11 @@
 package com.adbelem43.harpa.model;
 
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class Hino {
 
     private Integer numero;
@@ -15,15 +18,4 @@ public class Hino {
         this.versos = versos;
     }
 
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public List<String> getVersos() {
-        return versos;
-    }
 }
