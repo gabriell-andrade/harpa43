@@ -19,8 +19,4 @@ public class HinoService {
         return repository.buscarPorNumero(numero)
                 .orElseThrow(() -> new RuntimeException("Hino não encontrado"));
     }
-
-    public List<Hino> listarTodos() {
-        return repository.listarTodos();
-    }
 }

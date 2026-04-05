@@ -1,7 +1,11 @@
 let hino = null;
 let indice = 0;
+let sequencia = [];
 
 async function buscar() {
+    console.log("clicou no buscar");
+
+    console.log(hino);
 
     const numero = document.getElementById("numero").value;
 
@@ -14,31 +18,43 @@ async function buscar() {
 
     hino = await res.json();
 
+    sequencia = montarSequencia(hino);
+
+    console.log("sequencia: ", sequencia);
+
     indice = 0;
     render();
 }
 
 function render() {
-    document.getElementById("titulo").innerText =
+    if (!sequencia.length) return;
+
+    const atual = sequencia[indice];
+
+    console.log("slide atual: ", atual);
+
+    document.getElementById("titulo").innerHTML =
         `${hino.numero} - ${hino.titulo}`;
 
-    document.getElementById("verso").innerText =
-        hino.versos[indice];
+    document.getElementById("verso").innerHTML =
+        atual.linhas.join("<br>");
 }
 
 document.addEventListener("keydown", (e) => {
-    if(!hino) return;
+    if(!sequencia.length) return;
 
     if (e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
         indice++;
-        if (indice >= hino.versos.length) {
-            indice = hinos.versos.length - 1;
+        if (indice >= sequencia.length) {
+            indice = sequencia.length - 1;
         }
+        render();
     }
 
     if (e.key ==="ArrowRight") {
         indice++;
-        if (indice >= hino.versos.length) indice = hino.versos.length -1;
+        if (indice >= sequencia.length) indice = sequencia.length -1;
         render();
     }
 
@@ -51,6 +67,23 @@ document.addEventListener("keydown", (e) => {
 
 function fullscreen() {
     document.documentElement.requestFullscreen();
+}
+
+function montarSequencia(hino) {
+    const lista = [];
+
+    hino.estrofes.forEach((estrofe) => {
+        lista.push({
+            tipo: "estrofe",
+            linhas: estrofe
+        });
+
+        lista.push ({
+            tipo: "refrao",
+            linhas: hino.refrao
+        });
+    });
+    return lista;
 }
 
 
