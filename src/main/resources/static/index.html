@@ -8,14 +8,19 @@
 <body>
 
     <div id="app">
-
         <h1 id="titulo"></h1>
+        <div id="contador"></div>
+
         <p id="verso"></p>
 
-        <input id="numero" placeholder="Número do Hino">
-        <button id="btnBuscar">Buscar</button>
-        <button onclick="fullscreen()">Tela Cheia</button>
+        <div id="bottombar">
+            <button onclick="fullscreen()">⛶</button>
 
+            <div id="busca">
+                <input id="numero" placeholder="Número do Hino">
+                <button id="btnBuscar">Buscar</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

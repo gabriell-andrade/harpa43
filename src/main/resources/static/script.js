@@ -44,6 +44,12 @@ function render() {
             .map(linha => `<div class="linha">${linha}</div>`)
             .join("");
 
+    const atualEstrofe = getIndiceEstrofeAtual();
+    const totalEstrofes = getTotalEstrofes();
+
+    document.getElementById("contador").innerText =
+        `${atualEstrofe}/${totalEstrofes}`;
+
     ajustarTamanho();
 }
 
@@ -73,7 +79,21 @@ document.addEventListener("keydown", (e) => {
 });
 
 function fullscreen() {
-    document.documentElement.requestFullscreen();
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+
+    document.addEventListener("fullscreenchange", () => {
+        const btn = document.getElementById("btnFullscreen");
+
+        if (document.fullscreenElement) {
+            btn.innerText = "⛶";
+        } else {
+            btn.innerText = "⛶";
+        }
+    });
 }
 
 function montarSequencia(hino) {
@@ -94,22 +114,32 @@ function montarSequencia(hino) {
 }
 
 function ajustarTamanho() {
-
     const versoEl = document.getElementById("verso");
 
-    const linhas = versoEl.children.length;
+    let fontSize = 15;
 
-    if (linhas >= 5) {
-        versoEl.style.fontSize = "5vw";
-    } else if (linhas === 4) {
-        versoEl.style.fontSize = "6vw";
-    } else if (linhas === 3) {
-        versoEl.style.fontSize = "8vw";
-    } else {
-        versoEl.style.fontSize = "10vw";
+    versoEl.style.fontSize = fontSize + "vw";
+
+    while (versoEl.scrollHeight > versoEl.clientHeight && fontSize > 2) {
+        fontSize -= 0.2;
+        versoEl.style.fontSize = fontSize + "vw";
     }
 }
 
+function getIndiceEstrofeAtual() {
+    let contador = 0;
+
+    for (let i = 0; i <= indice; i++) {
+        if (sequencia[i].tipo === "estrofe") {
+            contador++;
+        }
+    }
+    return contador;
+}
+
+function getTotalEstrofes() {
+    return hino.estrofes.length
+}
 
 document.getElementById("btnBuscar")
     .addEventListener("click", buscar);
