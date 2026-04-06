@@ -1,8 +1,8 @@
 body {
     margin: 0;
-    background: black;
-    color: white;
-    font-family: Arial;
+    background: #000000;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
 }
 
 #app {
@@ -12,16 +12,23 @@ body {
     justify-content: center;
     height: 100vh;
     text-align: center;
+    padding: 20px;
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 28px;
     position: absolute;
     top: 20px;
+    opacity: 0.7;
 }
 
-p {
-    font-size: 56px;
-    max-width: 70%;
-    line-height: 1.5;
+#verso {
+    font-size: clamp(40px, 8vw, 120px);
+    line-height: 1.3;
+    max-width: 900%;
+}
+
+.linha {
+    margin: 20px 0;
+    font-weight: bold;
 }

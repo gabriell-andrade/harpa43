@@ -29,15 +29,22 @@ async function buscar() {
 function render() {
     if (!sequencia.length) return;
 
+    if (indice < 0) indice = 0;
+    if (indice >= sequencia.length) indice = sequencia.length - 1;
+
     const atual = sequencia[indice];
 
-    console.log("slide atual: ", atual);
+    const versoEl = document.getElementById("verso");
 
     document.getElementById("titulo").innerHTML =
         `${hino.numero} - ${hino.titulo}`;
 
     document.getElementById("verso").innerHTML =
-        atual.linhas.join("<br>");
+        atual.linhas
+            .map(linha => `<div class="linha">${linha}</div>`)
+            .join("");
+
+    ajustarTamanho();
 }
 
 document.addEventListener("keydown", (e) => {
@@ -84,6 +91,23 @@ function montarSequencia(hino) {
         });
     });
     return lista;
+}
+
+function ajustarTamanho() {
+
+    const versoEl = document.getElementById("verso");
+
+    const linhas = versoEl.children.length;
+
+    if (linhas >= 5) {
+        versoEl.style.fontSize = "5vw";
+    } else if (linhas === 4) {
+        versoEl.style.fontSize = "6vw";
+    } else if (linhas === 3) {
+        versoEl.style.fontSize = "8vw";
+    } else {
+        versoEl.style.fontSize = "10vw";
+    }
 }
 
 
