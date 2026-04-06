@@ -106,3 +106,15 @@ button {
 button:hover {
     border-color: white;
 }
+
+.linha {
+    font-weight: bold;
+}
+
+#verso .linha {
+    text-align: center;
+}
+
+.titulo-grande {
+    white-space: nowrap;
+}

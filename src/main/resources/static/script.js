@@ -33,24 +33,40 @@ function render() {
     if (indice >= sequencia.length) indice = sequencia.length - 1;
 
     const atual = sequencia[indice];
-
     const versoEl = document.getElementById("verso");
+    const tituloEl = document.getElementById("titulo");
+    const contadorEl = document.getElementById("contador");
 
-    document.getElementById("titulo").innerHTML =
-        `${hino.numero} - ${hino.titulo}`;
+    if (atual.tipo === "titulo") {
+        tituloEl.innerText = "";
+    } else {
+        tituloEl.innerText = `${hino.numero} - ${hino.titulo}`;
+    }
 
-    document.getElementById("verso").innerHTML =
-        atual.linhas
-            .map(linha => `<div class="linha">${linha}</div>`)
-            .join("");
+    if (atual.tipo === "titulo") {
+        versoEl.innerHTML = `
+            <div class="linha titulo-grande">
+                ${hino.numero} - ${hino.titulo}
+            </div>
+        `;
+        ajustarTitulo();
+    } else {
+        versoEl.innerHTML =
+            atual.linhas
+                .map(linha => `<div class="linha">${linha}</div>`)
+                .join("");
 
-    const atualEstrofe = getIndiceEstrofeAtual();
-    const totalEstrofes = getTotalEstrofes();
+        ajustarTamanho();
+    }
 
-    document.getElementById("contador").innerText =
-        `${atualEstrofe}/${totalEstrofes}`;
+    if (atual.tipo === "titulo") {
+        contadorEl.innerText = "";
+    } else {
+        const atualEstrofe = getIndiceEstrofeAtual();
+        const totalEstrofes = getTotalEstrofes();
 
-    ajustarTamanho();
+        contadorEl.innerText = `${atualEstrofe}/${totalEstrofes}`;
+    }
 }
 
 document.addEventListener("keydown", (e) => {
@@ -99,6 +115,11 @@ function fullscreen() {
 function montarSequencia(hino) {
     const lista = [];
 
+    lista.push({
+        tipo: "titulo",
+        linhas: [hino.titulo]
+    });
+
     hino.estrofes.forEach((estrofe) => {
         lista.push({
             tipo: "estrofe",
@@ -141,5 +162,25 @@ function getTotalEstrofes() {
     return hino.estrofes.length
 }
 
+function ajustarTitulo() {
+    const versoEl = document.getElementById("verso");
+
+    let fontSize = 10;
+    versoEl.style.fontSize = fontSize + "vw";
+
+    let tentativa = 0;
+
+    while (
+        versoEl.scrollWidth > versoEl.clientWidth &&
+        fontSize > 2 &&
+        tentativa < 30
+        ) {
+        fontSize -= 0.3;
+        versoEl.style.fontSize = fontSize + "vw";
+        tentativa++;
+    }
+}
+
 document.getElementById("btnBuscar")
     .addEventListener("click", buscar);
+
